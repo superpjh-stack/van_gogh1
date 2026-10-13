@@ -1,0 +1,9 @@
+*
+!Dockerfile
+!server.mjs
+!index.html
+!styles.css
+!script.js
+!image-data.js
+!assets/
+!assets/starry-night.jpeg

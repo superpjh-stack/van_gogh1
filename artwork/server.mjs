@@ -1,0 +1,5 @@
+import http from 'node:http';
+import {readFile} from 'node:fs/promises';
+const files={'image-data.js':'text/javascript','index.html':'text/html; charset=utf-8','styles.css':'text/css','script.js':'text/javascript','assets/starry-night.jpeg':'image/jpeg'};
+const server=http.createServer(async(req,res)=>{let name;try{name=decodeURIComponent(new URL(req.url,'http://localhost').pathname).replace(/^\//,'')||'index.html';}catch{res.writeHead(400).end();return;}if(!['GET','HEAD'].includes(req.method)){res.writeHead(405).end();return;}if(!Object.hasOwn(files,name)){res.writeHead(404).end('Not found');return;}try{const data=await readFile(new URL(name,import.meta.url));res.writeHead(200,{'Content-Type':files[name],'X-Content-Type-Options':'nosniff','Content-Length':data.length});res.end(req.method==='HEAD'?undefined:data);}catch{res.writeHead(404).end();}});
+server.listen(Number(process.env.PORT||8766),process.env.HOST||'127.0.0.1',()=>console.log('Artwork: http://localhost:'+(process.env.PORT||8766)));
